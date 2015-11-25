@@ -8,6 +8,8 @@ class Pusher
     protected $app;
     protected $key;
     protected $secret;
+    protected $scheme;
+    protected $host;
 
     public function __construct($url, $app, $key, $secret)
     {
@@ -15,6 +17,13 @@ class Pusher
         $this->app = $app;
         $this->key = $key;
         $this->secret = $secret;
+
+        $match = null;
+        preg_match("/(http[s]?)\:\/\/(.*)/", $url, $match);
+        if (count($match) === 3) {
+            $this->scheme = $match[ 1 ];
+            $this->host = $match[ 2 ];
+        }
     }
 
     public function checkCompatibility()
